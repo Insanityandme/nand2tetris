@@ -1,0 +1,29 @@
+if (out == 0) zr = 1, else zr = 0
+if (out < 0) ng = 1, else ng = 0
+
+if (ALU out > 0) -> ng = 0 & zr = 0
+if (ALU out = 0) -> ng = 0 & zr = 1
+if (ALU out >= 0) -> !ng & zr = 1
+if (ALU out < 0) ng = 1 & zr = 0
+if (ALU out != 0) ng = 1/0 & zr = 0
+if (ALU out <= 0) ng = 1, zr = 1
+
+Address = 14, pc = 14
+
+Kolla först vad för villkor 
+1 0 0, om ALU out < 0, aka när ng = 1, gör load biten till 1. 
+
+{1, 0, 0, 0, 0, 0, 0, 0 } if sel == 000 a
+{0, 1, 0, 0, 0, 0, 0, 0 } if sel == 001 b 
+{0, 0, 1, 0, 0, 0, 0, 0 } if sel == 010 c
+{0, 0, 0, 1, 0, 0, 0, 0 } if sel == 011 d
+{0, 0, 0, 0, 1, 0, 0, 0 } if sel == 100 e
+{0, 0, 0, 0, 0, 1, 0, 0 } if sel == 101 f
+{0, 0, 0, 0, 0, 0, 1, 0 } if sel == 110 g
+{0, 0, 0, 0, 0, 0, 0, 1 } if sel == 111 h
+
+
+if fifth bit is true, this means the condition we want to check
+is out < 0
+
+if comp != 0

@@ -43,25 +43,33 @@ CHIP ALU {
 
     PARTS:
    // ZX and ZY flag handling
+   // Decides whether the x or y input should be zeroed or not
    Mux16(a=x, b[0..15]=false, sel=zx, out=xMux);
    Mux16(a=y, b[0..15]=false, sel=zy, out=yMux);
 
    // NX and NY flag handling
+   // Decides whether we want to negate aka flip
+   // the whole 16-bit x value or 16-bit y value.
    Not16(in=xMux, out=notX);
    Mux16(a=xMux, b=notX, sel=nx, out=readyX);
    Not16(in=yMux, out=notY);
    Mux16(a=yMux, b=notY, sel=ny, out=readyY);
 
    // f control bit handling
+   // Decides whether what we want to compute 
+   // the output of x&&y or x + y
    And16(a=readyX, b=readyY, out=andOut);
    Add16(a=readyX, b=readyY, out=addOut);
    Mux16(a=andOut, b=addOut, sel=f, out=fOut);
 
    // NO control bit handling, out, ng flag
+   // Decides whether we want to negate the output.
    Not16(in=fOut, out=fNotOut);
-   Mux16(a=fOut, b=fNotOut, sel=no, out=out, out[15]=ng, out[0..7]=zrLow, out[8..15]=zrHigh);
+   Mux16(a=fOut, b=fNotOut, sel=no, out=out, out[15]=ng, 
+            out[0..7]=zrLow, out[8..15]=zrHigh);
    
    // ZR flag handling
+   // Decides if we want to zero the output or not.
    Or8Way(in=zrLow, out=or1Out);
    Or8Way(in=zrHigh, out=or2Out);
    Or(a=or1Out, b=or2Out, out=or3Out);
